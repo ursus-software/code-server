@@ -10,4 +10,4 @@ By default all images come preloaded with the follwing extensions:
 * eamodio.gitlens
 
 Images:
-* [openjdk11-hotspot](/jdk/openjdk11-hotspot/Dockerfile) - JDK from [adoptopenjdk/openjdk11:debian](https://hub.docker.com/r/adoptopenjdk/openjdk11) ([Dockerfile](https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/11/jdk/debian/Dockerfile.hotspot.releases.full))
+* [openjdk11-hotspot](https://github.com/ursus-software/code-server/blob/master/jdk/openjdk11-hotspot/Dockerfile) - JDK from [adoptopenjdk/openjdk11:debian](https://hub.docker.com/r/adoptopenjdk/openjdk11) ([Dockerfile](https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/11/jdk/debian/Dockerfile.hotspot.releases.full))
