@@ -4,5 +4,5 @@ USER root
 COPY --from=openjdk /opt/java/openjdk /opt/java/openjdk
 ENV JAVA_HOME="/opt/java/openjdk" PATH="/opt/java/openjdk/bin:$PATH"
 USER coder
-ENV EXTENSIONS="vscjava.vscode-java-pack redhat.vscode-yaml redhat.vscode-xml eamodio.gitlens"
+ENV EXTENSIONS="${EXTENSIONS} vscjava.vscode-java-pack"
 RUN ["/bin/bash", "-c", "for ext in ${EXTENSIONS[@]}; do code-server --extensions-dir ${EXTENSIONS_DIR} --install-extension ${ext}; done"]

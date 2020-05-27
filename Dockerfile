@@ -12,3 +12,5 @@ RUN mkdir -p $EXTENSIONS_DIR
 ENTRYPOINT ["dumb-init", "fixuid", "-q", "/usr/bin/code-server", "--bind-addr", "0.0.0.0:8080", "--extensions-dir", "/home/coder/extensions", "/home/coder/project"]
 VOLUME "$PROJECT_DIR"
 VOLUME "$EXTENSIONS_DIR"
+ENV EXTENSIONS="redhat.vscode-yaml redhat.vscode-xml eamodio.gitlens"
+RUN ["/bin/bash", "-c", "for ext in ${EXTENSIONS[@]}; do code-server --extensions-dir ${EXTENSIONS_DIR} --install-extension ${ext}; done"]
