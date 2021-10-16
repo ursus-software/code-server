@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2metadata:read
+        uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
         id: buildx
