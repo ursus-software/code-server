@@ -95,5 +95,5 @@ jobs:
             {"event_type": "rebuild"}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        secret:
+        secrets:
           ACTIONS_STEP_DEBUG: true
