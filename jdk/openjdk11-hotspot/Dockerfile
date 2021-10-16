@@ -1,5 +1,7 @@
+
+ARG BASE_IMAGE=ghcr.io/ursus-software/code-server:latest
 FROM adoptopenjdk/openjdk11:debian AS openjdk
-FROM ursus/code-server:latest
+FROM $BASE_IMAGE
 USER root
 COPY --from=openjdk /opt/java/openjdk /opt/java/openjdk
 ENV JAVA_HOME="/opt/java/openjdk" PATH="/opt/java/openjdk/bin:$PATH"
