@@ -89,10 +89,9 @@ jobs:
       - name: Trigger a rebuild repository_dispatch webhook event
         uses: octokit/request-action@v2.x
         with:
-          route: POST /repos/{repository}/dispatches
-          repository: ${{ github.repository }}
+          route: POST /repos/{owner}/{repo}/dispatches
+          owner: ${{ github.repository_owner }}
+          repo: code-server
           event_type: rebuild
-          # body: |
-          #   {"event_type": "rebuild"}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
