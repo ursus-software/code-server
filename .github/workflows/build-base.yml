@@ -15,9 +15,11 @@ on:
       build-args:
         description: "List of build-time variables"
         required: false
+        type: string
       context:
         description: "Build's context is the set of files located in the specified PATH or URL"
         required: false
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -94,7 +96,7 @@ jobs:
 
   trigger-rebuild:
     if: github.event_name != 'workflow_call'
-    
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
