@@ -92,5 +92,5 @@ jobs:
           route: POST /repos/{owner}/{repo}/dispatches
           owner: ${{ github.account }}
           repo: ${{ github.repo }}
-          body: {"event_type": "rebuild"}
+          body: '{"event_type": "rebuild"}'
 
