@@ -84,13 +84,15 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-      # Issue a 'rebuild' repository dispatch event
+      # Trigger a rebuild repository_dispatch webhook event
       # https://github.com/octokit/request-action
-      - name: 
+      - name: Trigger a rebuild repository_dispatch webhook event
         uses: octokit/request-action@v2.x
         with:
           route: POST /repos/{owner}/{repo}/dispatches
           owner: ${{ github.account }}
           repo: ${{ github.repo }}
           body: '{"event_type": "rebuild"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
