@@ -20,6 +20,9 @@ on:
         description: "Build's context is the set of files located in the specified PATH or URL"
         required: false
         type: string
+      prefix:
+        required: false
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -73,7 +76,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=true
-            prefix=
+            prefix=${{ inputs.prefix }}
             suffix=
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -81,8 +84,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
-          # build-args:
+          context: ${{ inputs.context || '.'}}
+          build-args: ${{ inputs.build-args }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
