@@ -10,6 +10,14 @@ on:
     branches: [ master ]
     paths: [ 'Dockerfile' ]
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      build-args:
+        description: "List of build-time variables"
+        required: false
+      context:
+        description: "Build's context is the set of files located in the specified PATH or URL"
+        required: false
 
 env:
   REGISTRY: ghcr.io
@@ -84,6 +92,14 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
+  trigger-rebuild:
+    if: github.event_name != 'workflow_call'
+    
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
       # Trigger a rebuild repository_dispatch webhook event
       # https://github.com/octokit/request-action
       - name: Trigger a rebuild repository_dispatch webhook event
