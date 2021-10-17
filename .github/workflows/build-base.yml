@@ -23,9 +23,6 @@ on:
       prefix:
         required: false
         type: string
-      base-image:
-        required: false
-        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -88,8 +85,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ inputs.context || '.'}}
-          build-args:
-            BASE_IMAGE: ${{ inputs.base-image }}
+          build-args: ${{ inputs.build-args }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

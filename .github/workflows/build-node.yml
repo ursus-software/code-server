@@ -24,6 +24,7 @@ jobs:
     with:
       prefix: node
       context: node/.
-      base-image: ghcr.io/${{ github.repository }}:latest
+      build-args: |
+          BASE_IMAGE=ghcr.io/${{ github.repository }}:latest
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
