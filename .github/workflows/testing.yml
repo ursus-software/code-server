@@ -1,0 +1,16 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Lower case inputs.build-args and set as ENV
+          id: build-args-lower
+          run: |
+            echo "${GITHUB_ENV}"
+            cat "${GITHUB_ENV}"
+          env:
+            BUILD_ARGS: Zoki

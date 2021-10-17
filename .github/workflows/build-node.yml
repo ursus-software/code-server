@@ -20,11 +20,9 @@ concurrency:
 jobs:
   build:
     
-    uses: stalkingkillah/code-server/.github/workflows/build-base.yml@master
+    uses: stalkingkillah/code-server/.github/workflows/workflow-base.yml@master
     with:
-      prefix: node
+      prefix: node-
       context: node/.
       build-args: |
           BASE_IMAGE=ghcr.io/${{ github.repository }}:latest
-    # secrets:
-      # token: ${{ secrets.GITHUB_TOKEN }}

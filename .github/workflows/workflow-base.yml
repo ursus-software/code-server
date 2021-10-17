@@ -1,0 +1,94 @@
+name: Base Workflow
+
+on:
+  workflow_call:
+    inputs:
+      build-args:
+        description: "List of build-time variables"
+        required: false
+        type: string
+      context:
+        description: "Build's context is the set of files located in the specified PATH or URL"
+        required: false
+        type: string
+      prefix:
+        required: false
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ inputs.registry }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=true
+            prefix=${{ inputs.prefix }}
+            suffix=
+      
+      # - name: Lower case inputs.build-args and set as ENV
+      #   id: build-args-lower
+      #   run: |
+      #     echo "${GITHUB_ENV}"
+      #     cat "${GITHUB_ENV}"
+      #     # echo "BUILD_ARGS=$(echo ${BUILD_ARGS} | awk -F= '{$2=tolower($2);print}' OFS='=')" >>${GITHUB_ENV}
+      #   env:
+      #     BUILD_ARGS: '${{ inputs.build-args }}'
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ inputs.context }}
+          build-args: ${{ inputs.build-args }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
