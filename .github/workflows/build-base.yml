@@ -29,9 +29,10 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-concurrency: 
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+# Fix: Concurrency is not yet supported at the root of a called workflow file
+# concurrency: 
+#   group: ${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   build:
