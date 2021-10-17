@@ -1,0 +1,42 @@
+name: Build Base Image
+
+on:
+  push:
+    branches: [ master ]
+    # Publish semver tags as releases.
+    # tags: [ 'v*.*.*' ]
+    paths: [ 'Dockerfile' ]
+  pull_request:
+    branches: [ master ]
+    paths: [ 'Dockerfile' ]
+  workflow_dispatch:
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: stalkingkillah/code-server/.github/workflows/workflow-base.yml@master
+    with:
+      context: .
+
+  trigger-rebuild:
+    needs: build
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # Trigger a rebuild repository_dispatch webhook event
+      # https://github.com/octokit/request-action
+      - name: Trigger a rebuild repository_dispatch webhook event
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/dispatches
+          owner: ${{ github.repository_owner }}
+          repo: code-server
+          event_type: rebuild
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

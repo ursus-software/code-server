@@ -1,0 +1,28 @@
+name: Build Node Image
+
+on:
+  push:
+    branches: [ master ]
+    # Publish semver tags as releases.
+    # tags: [ 'v*.*.*' ]
+    paths: [ 'node/Dockerfile' ]
+  pull_request:
+    branches: [ master ]
+    paths: [ 'node/Dockerfile' ]
+  repository_dispatch:
+    types: [ rebuild ]
+  workflow_dispatch:
+
+# concurrency: 
+#   group: ${{ github.ref }}
+#   cancel-in-progress: true
+
+jobs:
+  build:
+    
+    uses: stalkingkillah/code-server/.github/workflows/workflow-base.yml@master
+    with:
+      prefix: node-
+      context: node/.
+      build-args: |
+          BASE_IMAGE=ghcr.io/${{ github.repository }}:latest
