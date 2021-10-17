@@ -13,11 +13,6 @@ on:
     types: [ rebuild ]
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
 concurrency: 
   group: ${{ github.ref }}
   cancel-in-progress: true
@@ -29,6 +24,6 @@ jobs:
     with:
       prefix: node
       context: node/.
-      base-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      base-image: ghcr.io/${{ github.repository }}:latest
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
