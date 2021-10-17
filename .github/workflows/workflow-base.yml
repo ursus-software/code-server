@@ -66,14 +66,12 @@ jobs:
             prefix=${{ inputs.prefix }}
             suffix=
       
-      # - name: Lower case inputs.build-args and set as ENV
-      #   id: build-args-lower
-      #   run: |
-      #     echo "${GITHUB_ENV}"
-      #     cat "${GITHUB_ENV}"
-      #     # echo "BUILD_ARGS=$(echo ${BUILD_ARGS} | awk -F= '{$2=tolower($2);print}' OFS='=')" >>${GITHUB_ENV}
-      #   env:
-      #     BUILD_ARGS: '${{ inputs.build-args }}'
+      - name: Lower case inputs.build-args and set as ENV
+        id: build-args-lower
+        run: |
+          echo "BUILD_ARGS_LC=${BUILD_ARGS,,}" >>${GITHUB_ENV}
+        env:
+          BUILD_ARGS: '${{ inputs.build-args }}'
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -81,7 +79,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ inputs.context }}
-          build-args: ${{ inputs.build-args }}
+          build-args: ${{ env.BUILD_ARGS_LC }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
