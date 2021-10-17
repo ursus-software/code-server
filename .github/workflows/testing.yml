@@ -7,10 +7,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-        - name: Lower case inputs.build-args and set as ENV
-          id: build-args-lower
-          run: |
-            echo "${GITHUB_ENV}"
-            cat "${GITHUB_ENV}"
-          env:
-            BUILD_ARGS: Zoki
+      - name: What is ${GITHUB_ENV}
+        id: what
+        run: |
+          cat "${GITHUB_ENV}"
+        env:
+          BUILD_ARGS: Zoki
+      - name: What is ${GITHUB_ENV}
+        id: read
+        run: |
+          echo "${GITHUB_ENV}"
+          cat "${GITHUB_ENV}"
+        env:
+          BUILD_ARGS: Zoki
+
