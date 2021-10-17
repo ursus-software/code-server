@@ -13,9 +13,9 @@ on:
     types: [ rebuild ]
   workflow_dispatch:
 
-concurrency: 
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+# concurrency: 
+#   group: ${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   build:
@@ -26,4 +26,3 @@ jobs:
       context: node/.
       build-args: |
           BASE_IMAGE=ghcr.io/${{ github.repository }}:latest
-          SAMPLE=FooBar
