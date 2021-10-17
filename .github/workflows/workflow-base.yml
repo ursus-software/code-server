@@ -69,7 +69,7 @@ jobs:
       - name: Lower case inputs.build-args and set as ENV
         id: build-args-lower
         run: |
-          echo "BUILD_ARGS_LC=${BUILD_ARGS,,}" >>${GITHUB_ENV}
+          echo "BUILD_ARGS_LC=$(echo ${BUILD_ARGS} | awk '{ for(i=1;i<=NF;i++) { split($i,p,"="); print p[1]"="tolower(p[2]); } }')" >>${GITHUB_ENV}
         env:
           BUILD_ARGS: '${{ inputs.build-args }}'
 
