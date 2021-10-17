@@ -15,7 +15,7 @@ on:
       build-args:
         description: "List of build-time variables"
         required: false
-        type: string
+        type: mapping
       context:
         description: "Build's context is the set of files located in the specified PATH or URL"
         required: false
