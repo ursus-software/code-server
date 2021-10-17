@@ -29,7 +29,6 @@ jobs:
     with:
       prefix: node
       context: node/.
-      build-args: |
-        { BASE_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest |
+      base-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
